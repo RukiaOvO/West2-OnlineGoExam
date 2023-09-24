@@ -14,7 +14,7 @@ var check uint = 1
 
 const (
 	username = "root"
-	password = "root"
+	password = "Takagi20040303"
 	host     = "127.0.0.1"
 	port     = 3306
 	Dbname   = "Moviedb"
