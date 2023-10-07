@@ -31,3 +31,11 @@ func InitDB() *gorm.DB {
 
 	return db
 }
+
+func CloseDB(db *gorm.DB) error {
+	DB, err := db.DB()
+	if err != nil {
+		return err
+	}
+	return DB.Close()
+}

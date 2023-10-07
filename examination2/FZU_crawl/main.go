@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"fzu_crawl/data"
+	model "fzu_crawl/data"
 	model2 "fzu_crawl/data/model"
 	"github.com/PuerkitoBio/goquery"
 	"gorm.io/gorm"
@@ -15,48 +15,66 @@ import (
 
 const (
 	headerSetting = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
+	startPage     = 155
+	endPage       = 278
 )
 
-var count int = 1
-
 func main() {
-	startPage := 155
-
 	db := model.InitDB()
+
+	normalStart(db) //33 seconds
+	//conStart(db) //1.8 seconds
+	//加速比约为18
+
+	err := model.CloseDB(db)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func normalStart(db *gorm.DB) {
 	sTime := time.Now()
-	for {
-		err := crawl(db, strconv.Itoa(startPage))
-		if err != nil {
-			panic(err)
-		}
-		startPage++
-		if startPage > 278 {
-			break
-		}
+	emp := make(chan bool, 1)
+	for i := startPage; i <= endPage; i++ {
+		Crawl(db, strconv.Itoa(i), emp)
+		<-emp
 	}
 	eTime := time.Now()
 
-	fmt.Printf("总共爬取 %d 页, 耗时 %s\n", count, eTime.Sub(sTime))
+	fmt.Printf("耗时 %s\n", eTime.Sub(sTime))
 }
 
-func crawl(db *gorm.DB, p string) error {
+func conStart(db *gorm.DB) {
+	sTime := time.Now()
+	ch := make(chan bool)
+	for i := startPage; i <= endPage; i++ {
+		go Crawl(db, strconv.Itoa(i), ch)
+	}
+	for i := startPage; i <= endPage; i++ {
+		<-ch
+	}
+	eTime := time.Now()
+
+	fmt.Printf("耗时 %s\n", eTime.Sub(sTime))
+}
+
+func Crawl(db *gorm.DB, p string, ch chan bool) {
 	homeUrl := "https://info22.fzu.edu.cn/lm_list.jsp?totalpage=956&PAGENUM=" + p + "&wbtreeid=1460"
 	homeClient := http.Client{}
 	homeReq, err := http.NewRequest("GET", homeUrl, nil)
 	if err != nil {
-		return err
+		panic(err)
 	}
 	homeReq.Header.Set("User-Agent", headerSetting)
 
 	homeRes, err := homeClient.Do(homeReq)
 	if err != nil {
-		return err
+		panic(err)
 	}
-	defer homeRes.Body.Close()
 
 	homeDetail, err := goquery.NewDocumentFromReader(homeRes.Body)
 	if err != nil {
-		return err
+		panic(err)
 	}
 
 	for i := 1; i <= 20; i++ {
@@ -77,16 +95,16 @@ func crawl(db *gorm.DB, p string) error {
 		innerClient := http.Client{}
 		innerReq, err := http.NewRequest("GET", innerUrl, nil)
 		if err != nil {
-			return err
+			panic(err)
 		}
 		innerReq.Header.Set("User-Agent", headerSetting)
 		innerRes, err := innerClient.Do(innerReq)
 		if err != nil {
-			return err
+			panic(err)
 		}
 		tempNums, err := io.ReadAll(innerRes.Body)
 		if err != nil {
-			return err
+			panic(err)
 		}
 		nums := string(tempNums)
 
@@ -98,10 +116,15 @@ func crawl(db *gorm.DB, p string) error {
 		newData.Nums = nums
 
 		db.Create(&newData)
-		fmt.Println("Insert data", count)
-		count++
+		fmt.Println("Insert data, page =", p)
+
+		innerRes.Body.Close()
 	}
-	return nil
+
+	homeRes.Body.Close()
+	if ch != nil {
+		ch <- true
+	}
 }
 
 func dateCheck(d string) bool {
