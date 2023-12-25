@@ -1,0 +1,13 @@
+MysqlConfig:
+  username: "root"
+  password: "admin"
+  dbname: "todolist"
+  charset: "utf8mb4"
+  host: "127.0.0.1"
+  port: 3306
+
+RedisConfig:
+  host: "127.0.0.1"
+  port: "6379"
+  db: 3
+  password: "admin"

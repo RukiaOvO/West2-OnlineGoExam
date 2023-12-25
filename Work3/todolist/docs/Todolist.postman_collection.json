@@ -1,0 +1,286 @@
+{
+	"info": {
+		"_postman_id": "5e6d832f-3096-494f-91e9-14de8f4ceff2",
+		"name": "Todolist",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "31095814"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "用户登录",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "user_name",
+									"value": "Rukia",
+									"type": "text"
+								},
+								{
+									"key": "pass_word",
+									"value": "admin",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{url}}/user/login"
+					},
+					"response": []
+				},
+				{
+					"name": "用户注册",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "user_name",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "pass_word",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{url}}/user/register"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Task",
+			"item": [
+				{
+					"name": "addTask",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcl9uYW1lIjoiUnVraWEiLCJleHAiOjE3MDM0OTg3OTEsImlzcyI6ImJha2FfYWNjZXNzdG9rZW4ifQ.hbbGER9quohskROM9YLCLjgVcUo3Twne5dvVed4qodM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "rukia_title",
+									"type": "text"
+								},
+								{
+									"key": "content",
+									"value": "testcontent",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{url}}/task"
+					},
+					"response": []
+				},
+				{
+					"name": "deleteTask",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcl9uYW1lIjoiUnVraWEiLCJleHAiOjE3MDM0OTg3OTEsImlzcyI6ImJha2FfYWNjZXNzdG9rZW4ifQ.hbbGER9quohskROM9YLCLjgVcUo3Twne5dvVed4qodM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/task/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"task",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "45"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "showTasks",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcl9uYW1lIjoiUnVraWEiLCJleHAiOjE3MDM0OTg3OTEsImlzcyI6ImJha2FfYWNjZXNzdG9rZW4ifQ.hbbGER9quohskROM9YLCLjgVcUo3Twne5dvVed4qodM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/task/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"task",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "51"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchTask",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcl9uYW1lIjoiUnVraWEiLCJleHAiOjE3MDM0OTg3OTEsImlzcyI6ImJha2FfYWNjZXNzdG9rZW4ifQ.hbbGER9quohskROM9YLCLjgVcUo3Twne5dvVed4qodM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "keyword",
+									"value": "6",
+									"type": "text"
+								},
+								{
+									"key": "limit",
+									"value": "15",
+									"type": "text"
+								},
+								{
+									"key": "start",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{url}}/search"
+					},
+					"response": []
+				},
+				{
+					"name": "updateTask",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcl9uYW1lIjoiUnVraWEiLCJleHAiOjE3MDM0OTg3OTEsImlzcyI6ImJha2FfYWNjZXNzdG9rZW4ifQ.hbbGER9quohskROM9YLCLjgVcUo3Twne5dvVed4qodM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "new_status",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/task/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"task",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "46"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listTask",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcl9uYW1lIjoiUnVraWEiLCJleHAiOjE3MDM0OTg3OTEsImlzcyI6ImJha2FfYWNjZXNzdG9rZW4ifQ.hbbGER9quohskROM9YLCLjgVcUo3Twne5dvVed4qodM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "limit",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "start",
+									"value": "0",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{url}}/tasks"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Test",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{url}}/test"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}
